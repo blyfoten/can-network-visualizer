@@ -1,0 +1,10 @@
+{
+  "can_channels": [
+    {"node": "ECU1", "channels": ["Red", "Blue", "Yellow"]},
+    {"node": "ECU2", "channels": ["Blue", "Green"]},
+    {"node": "ECU3", "channels": ["Red", "Blue"]},
+    {"node": "Gateway", "channels": ["Red", "Blue", "Green", "Yellow"]},
+    {"node": "Infotainment", "channels": ["Yellow"]},
+    {"node": "BodyControl", "channels": ["Green"]}
+  ]
+} 
