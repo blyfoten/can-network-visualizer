@@ -9,6 +9,9 @@ A web-based tool for visualizing CAN (Controller Area Network) bus connections i
 - Interactive drag-and-drop interface to rearrange ECUs
 - Toggle ECUs between positions above or below the bus lines
 - Color-coded buses for easier identification
+- Save and load custom layouts of your CAN network visualization
+- Automatic ECU position toggling when dragging across bus lines
+- Clean, professional white background for better visibility
 
 ## Getting Started
 
@@ -39,7 +42,14 @@ A web-based tool for visualizing CAN (Controller Area Network) bus connections i
 2. Interact with the visualization:
    - Drag ECU boxes to reposition them horizontally
    - Click the arrow buttons on ECUs to toggle their position above/below the buses
+   - Drag ECUs above or below the bus lines to automatically toggle their position
    - Use the controls in the bottom right to zoom and pan the view
+   - Click "Save Current Layout" to save your custom arrangement
+
+3. Loading saved layouts:
+   - Upload a JSON file that includes layout information
+   - The visualization will automatically restore the saved positions of ECUs
+   - If no layout information is present, the default layout algorithm will be used
 
 ## JSON Format
 
@@ -51,13 +61,33 @@ Your CAN network configuration should follow this format:
     {"node": "ECU1", "channels": ["Red", "Blue", "Yellow"]},
     {"node": "ECU2", "channels": ["Blue", "Green"]},
     {"node": "ECU3", "channels": ["Red", "Blue"]}
-  ]
+  ],
+  "layout": {
+    "positions": [
+      {
+        "nodeId": "ECU1",
+        "x": 100,
+        "y": 50,
+        "isAboveBus": true
+      },
+      {
+        "nodeId": "ECU2",
+        "x": 300,
+        "y": 150,
+        "isAboveBus": false
+      }
+    ]
+  }
 }
 ```
 
 Where:
 - `node`: The name of the ECU
 - `channels`: Array of CAN bus names that the ECU connects to
+- `layout` (optional): Contains saved positions for each ECU
+  - `nodeId`: The name of the ECU
+  - `x`, `y`: The position coordinates
+  - `isAboveBus`: Whether the ECU is positioned above or below the bus lines
 
 ## Technologies Used
 
