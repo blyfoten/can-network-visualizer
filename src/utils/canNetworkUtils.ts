@@ -9,12 +9,20 @@ import {
 
 // Convert input JSON data to visualization model
 export const processCanNetworkData = (data: CanNetworkData) => {
-  // Extract all unique channel (bus) names
-  const busNames = Array.from(
-    new Set(data.can_channels.flatMap(channel => channel.channels))
-  );
+  // Count occurrences of each channel
+  const channelCounts = new Map<string, number>();
+  data.can_channels.forEach(channel => {
+    channel.channel_names.forEach(name => {
+      channelCounts.set(name, (channelCounts.get(name) || 0) + 1);
+    });
+  });
 
-  // Create bus objects
+  // Extract channel names that have multiple connections
+  const busNames = Array.from(channelCounts.entries())
+    .filter(([_, count]) => count > 1)
+    .map(([name, _]) => name);
+
+  // Create bus objects only for channels with multiple connections
   const buses: CanBus[] = busNames.map((name, index) => ({
     id: `bus-${uuidv4()}`,
     name
@@ -46,29 +54,29 @@ export const processCanNetworkData = (data: CanNetworkData) => {
       id: `ecu-${uuidv4()}`,
       name: channel.node,
       position: { x, y },
-      channels: channel.channels,
+      channels: channel.channel_names,
       isAboveBus
     };
   });
 
-  // Create ports and connections
+  // Create ports for all channels and connections only for multi-connected channels
   const ports: CanPort[] = [];
   const connections: CanConnection[] = [];
 
   ecuNodes.forEach(ecu => {
     ecu.channels.forEach(channelName => {
       const bus = buses.find(bus => bus.name === channelName);
+      const portId = `port-${uuidv4()}`;
+      
+      // Create port for all channels
+      ports.push({
+        id: portId,
+        ecuId: ecu.id,
+        busId: bus?.id || channelName // Use channel name as ID for single-connection channels
+      });
+      
+      // Create connection only if there's a bus (multiple connections)
       if (bus) {
-        const portId = `port-${uuidv4()}`;
-        
-        // Create port
-        ports.push({
-          id: portId,
-          ecuId: ecu.id,
-          busId: bus.id
-        });
-        
-        // Create connection
         connections.push({
           id: `connection-${uuidv4()}`,
           portId,

@@ -72,9 +72,9 @@ const JsonFileUploader: React.FC<JsonFileUploaderProps> = ({ onFileLoaded }) => 
   const handleLoadSampleData = () => {
     const sampleData: CanNetworkData = {
       can_channels: [
-        { node: "ECU1", channels: ["Red", "Blue", "Yellow"] },
-        { node: "ECU2", channels: ["Blue", "Green"] },
-        { node: "ECU3", channels: ["Red", "Blue"] }
+        { node: "ECU1", channel_names: ["Red", "Blue", "Yellow"] },
+        { node: "ECU2", channel_names: ["Blue", "Green"] },
+        { node: "ECU3", channel_names: ["Red", "Blue"] }
       ]
     };
     

@@ -3,7 +3,7 @@
 // Input JSON structure
 export interface CanChannelData {
   node: string;
-  channels: string[];
+  channel_names: string[];
   // Optional position attributes
   x?: number;
   y?: number;
@@ -16,9 +16,9 @@ export interface CanChannelData {
  * Example with layout information:
  * {
  *   "can_channels": [
- *     { "node": "ECU1", "channels": ["Red", "Blue", "Yellow"] },
- *     { "node": "ECU2", "channels": ["Blue", "Green"] },
- *     { "node": "ECU3", "channels": ["Red", "Blue"] }
+ *     { "node": "ECU1", "channel_names": ["Red", "Blue", "Yellow"] },
+ *     { "node": "ECU2", "channel_names": ["Blue", "Green"] },
+ *     { "node": "ECU3", "channel_names": ["Red", "Blue"] }
  *   ],
  *   "layout": {
  *     "positions": [
